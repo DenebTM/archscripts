@@ -1,0 +1,10 @@
+#!/bin/sh
+fn=$1
+ex=$2
+if [ -f $fn'.'$ex ]; then
+    ap="_000"
+    while [ -f $fn$ap.$ex ]; do
+        ap=$(printf _%03d $((${ap:1:3} + 1)))
+    done
+fi
+echo $fn$ap.$ex

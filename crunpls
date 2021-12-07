@@ -1,0 +1,6 @@
+#!/bin/sh
+infile=$1
+outfile="${infile%.*}"
+args=${@:2}
+echo "$infile -> $outfile"
+gcc $infile -o $outfile && (./$outfile $args; rm $outfile)
