@@ -1,8 +1,8 @@
 #!/bin/bash
 infile=$1
 outfile="${infile%.*}"
-arm-linux-gnueabihf-as -o $outfile.o $infile &&
-arm-linux-gnueabihf-ld -o $outfile $outfile.o &&
+arm-linux-gnueabi-as -o $outfile.o $infile &&
+arm-linux-gnueabi-ld -o $outfile $outfile.o &&
 rm $outfile.o &&
 out="$(qemu-arm $outfile)" &&
 printf "\n$out\n"
