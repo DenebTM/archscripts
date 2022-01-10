@@ -3,5 +3,5 @@ infile=$1
 outfile="${infile%.*}"
 args=${@:2}
 echo "$infile -> $outfile"
-gcc -lr -Wall -Werror -Wextra -Wpedantic -std=c99 $infile -o $outfile && (time ./$outfile $args; rm $outfile)
+gcc -lm -Wall -Werror -Wextra -Wpedantic -std=c99 $infile -o $outfile && (time ./$outfile $args; rm $outfile)
 echo
