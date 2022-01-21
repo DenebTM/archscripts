@@ -1,9 +1,10 @@
 #!/bin/bash
-linver="linux-zen"
+linver="linux"
 opts="$1"
 opts_add="${*:2}"
 if ([ -z "$opts" ] || [ "$opts" == "default" ]); then
-    opts='intel_pstate=disable quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0'
+    #opts='intel_pstate=disable quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0'
+    opts='quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0'
 fi
 
 efibootmgr -Bb0000
