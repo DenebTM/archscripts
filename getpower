@@ -1,39 +1,22 @@
 #!/usr/bin/python3
 import os, os.path
 import time, sys, traceback
-from blessings import Terminal
-term = Terminal()
+from blessed import Terminal
+t = Terminal()
 
+# updates every 5 seconds by default
 updateDelay = 5
 i = sys.argv.index('-t') if '-t' in sys.argv else None
 if i and len(sys.argv) > i:
     updateDelay = float(sys.argv[i+1])
 
-class f:
-    PURPLE = '\033[95m'
-    CYAN = '\033[96m'
-    DARKCYAN = '\033[36m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    END = '\033[0m'
-    def sleb(t):
-        time.sleep(t)
+# rows,columns = os.popen('stty size', 'r').read().split()
 
-rows,columns = os.popen('stty size', 'r').read().split()
-
+# relevant virtual files
 powerpath = '/sys/class/power_supply/'
 batpath = powerpath + 'BAT'
 pathes = ['energy_full_design', 'energy_full', 'energy_now', 'power_now']
 batts = [name for name in sorted(os.listdir(powerpath)) if name.startswith('BAT')]
-batcount = len(batts)
-
-lines = 3 + 6 * batcount
-if batcount > 1:
-    lines += 7
 
 def printW(pwr):
     if pwr < 10:
@@ -48,7 +31,7 @@ def printW(pwr):
 def printAll():
     pwrvals = []
     totals = [0, 0, 0, 0]
-    print()
+    print('\n', end=t.clear_eos)
     for n, b in enumerate(batts):
         print(b+':')
         pwrvals.append([])
@@ -62,20 +45,20 @@ def printAll():
             if p == "energy_now":
                 percentage = pwrvals[n][2] / pwrvals[n][1]
                 if percentage < 0.25:
-                    print(f.RED, end='')
+                    print(t.bright_red, end='')
                 elif percentage < 0.8:
-                    print(f.YELLOW, end='')
+                    print(t.bright_yellow, end='')
                 else:
-                    print(f.GREEN, end='')
+                    print(t.bright_green, end='')
             printW(pwr)
             if p != "power_now": print('h')
             if p == "energy_now":
-                print(f.END, end='')
+                print(t.normal, end='')
 
-        print('\n')
+        print(('\n') * 2, end='')
 
-    # Print the total
-    if batcount > 1:
+    # total up all present batteries
+    if len(batts) > 1:
         print('-'.ljust(39, '-'))
         print('\nTotal:')
         for i, p in enumerate(pathes):
@@ -83,36 +66,22 @@ def printAll():
             if p == "energy_now":
                 percentage = totals[2] / totals[1]
                 if percentage < 0.25:
-                    print(f.RED, end='')
+                    print(t.bright_red, end='')
                 elif percentage < 0.8:
-                    print(f.YELLOW, end='')
+                    print(t.bright_yellow, end='')
                 else:
-                    print(f.GREEN, end='')
+                    print(t.bright_green, end='')
             printW(totals[i])
             if p != "power_now": print('h')
             if p == "energy_now":
-                print(f.END, end='')
+                print(t.normal, end='')
         print()
 
     print()
 
 def updateBatCount():
-    global lines
-    global batcount
-    batcountNew = len([name for name in os.listdir(powerpath) if name.startswith('BAT')])
-    if lines == 0:
-        lines = 3 + 6 * batcount
-        if batcount > 1:
-            lines += 7
-    if batcount != batcountNew:
-        if batcount < batcountNew:
-            print('\nA battery has been inserted.')
-            print('-'.ljust(39, '-'))
-        elif batcountNew < batcount:
-            print('\nA battery has been removed.')
-            print('-'.ljust(39, '-'))
-        lines = 0
-        batcount = batcountNew
+    global batts
+    batts = [name for name in sorted(os.listdir(powerpath)) if name.startswith('BAT')]
 
 try:
     if '--once' in sys.argv:
@@ -120,10 +89,11 @@ try:
         sys.exit(0)
     else:
         while True:
-            printAll()
-            f.sleb(updateDelay)
-            updateBatCount()
-            print(term.move_up * lines)
+            with t.hidden_cursor():
+                with t.location():
+                    printAll()
+                time.sleep(updateDelay)
+                updateBatCount()
 except KeyboardInterrupt:
     sys.exit(0)
 except Exception:
