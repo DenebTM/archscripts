@@ -6,9 +6,10 @@ fi
 
 n="$1"
 basename="$2"
-[[ ! -z "$basename" ]] && basename="$basename"_
 for i in $(seq 1 1 $n); do
     read -n 1 -r -s -p $'Press enter to continue.\n'
     echo "Scanning image $i of $n, please wait..."
-    scanimage --resolution 300 --format=png -o "$basename""$i"".png"
+    fullname="$basename"
+    [[ $n -gt 1 ]] && fullname="$fullname"_"$i"
+    scanimage --resolution 300 --format=png -o "$fullname".png
 done
