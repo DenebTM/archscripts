@@ -20,6 +20,7 @@ if [[ "$1" == "f" || "$1" == "a" ]]; then
     spectacle -$1bco $filename
     echo "Screenshot saved to $filename."
 elif [[ "$1" == "r" ]]; then
-    sleep 0.2 && flameshot gui
+    #sleep 0.2 && flameshot gui
+    spectacle -rbc
     echo "Screenshot saved to clipboard."
 fi

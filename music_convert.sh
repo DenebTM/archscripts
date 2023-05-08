@@ -16,7 +16,7 @@ function break() {
 trap break INT
 
 for file in "$@"; do
-    ffmpeg -i "$file" -q:a 0 -map_metadata 0:s:0 -id3v2_version 3 $(basename "${file%.*}.mp3")
+    ffmpeg -i "$file" -q:a 0 -map_metadata 0:s:0 -id3v2_version 3 $(basename "${file%%.*}.mp3")
 done
 
 IFS=$OLDIFS
