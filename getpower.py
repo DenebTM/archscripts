@@ -68,7 +68,7 @@ def printPwrVal(key, pwrval):
             print(t.normal, end='')
 
 def printAll(pwrvals):
-    print('\n', end=t.clear_eos)
+    print(t.home + t.clear)
     totals = {}
 
     for key in pwrvals:
@@ -95,13 +95,12 @@ if __name__ == '__main__':
             sys.exit(0)
         else:
             pwrvals = {}
-            while True:
-                with t.hidden_cursor():
+            with t.hidden_cursor(), t.fullscreen(), t.hidden_cursor():
+                while True:
                     newvals = getPwrVals()
                     if newvals != pwrvals:
                         pwrvals = newvals
-                        with t.location():
-                            printAll(pwrvals)
+                        printAll(pwrvals)
                     time.sleep(updateInterval)
                     updateBatts()
     except KeyboardInterrupt:
