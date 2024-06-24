@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 infile=$1
 outfile="${infile%.*}"
 arm-linux-gnueabi-as -ggdb -o $outfile.o $infile &&

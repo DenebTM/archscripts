@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Quick and dirty script for configuring wine font smoothing
 #
 # Author: Igor Tarasov <tarasov.igor@gmail.com>

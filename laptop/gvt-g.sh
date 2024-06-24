@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 sudo -A qemu-system-x86_64                                          \
     -enable-kvm -m 8G -smp cores=4,threads=2,sockets=1,maxcpus=8    \
     -cpu host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time       \

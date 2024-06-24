@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 if [[ -z "$1" ]]; then
     echo "Usage: $0 <number of images> [<basename>]"
     exit -1

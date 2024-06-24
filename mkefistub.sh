@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 linver="linux-mainline"
 opts="$1"
 opts_add="${*:2}"
-if ([ -z "$opts" ] || [ "$opts" == "default" ]); then
+if ([ -z "$opts" ] || [ "$opts" = "default" ]); then
     #opts='intel_pstate=disable quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0'
     opts='quiet splash loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0 mitigations=off retbleed=off'
 fi

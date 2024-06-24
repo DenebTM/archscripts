@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 function newfname {
     # just in case I manage to take two screenshots in one second, this prevents one overwriting the other
     local fn=$1
@@ -21,5 +21,6 @@ if [[ "$1" == "f" || "$1" == "a" ]]; then
     echo "Screenshot saved to $filename."
 elif [[ "$1" == "r" ]]; then
     sleep 0.2 && flameshot gui
+    #spectacle -rcbn
     echo "Screenshot saved to clipboard."
 fi
