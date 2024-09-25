@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 -u
+#!/usr/bin/env -S python3 -u
 import os
 import os.path
 import time
@@ -41,7 +41,7 @@ for n, s in enumerate(sensors):
 # Running index
 # The fan speed will be set every ten seconds, even if the correct speed hasn't
 # changed. This is primarily to deal with level=auto after standby.
-run = None
+run = 0
 
 # Start infinite loop
 try:
@@ -50,10 +50,10 @@ try:
 
         # Determine the correct fan speed
         hyst_min, hyst_max = thresholds[level]
-        if cpu_min < hyst_min:
+        if cpu_temp < hyst_min:
             new_level = filter(lambda i: i[1][0] <= cpu_temp <= i[1][1],
                                enumerate(thresholds[:level]))[0][0]
-        elif cpu_max > hyst_max:
+        elif cpu_temp > hyst_max:
             new_level = filter(lambda i: i[1][0] <= cpu_temp <= i[1][1],
                                enumerate(thresholds[(level+1):]))[0][0]
         else:
@@ -68,7 +68,7 @@ try:
                           + f'{15 - fan_on_threshold} more seconds.')
 
                 # Set the correct fan speed on first run, though
-                if run is None:
+                if run == 0:
                     fan_on_threshold = 15
                 else:
                     new_level = 1
@@ -84,8 +84,8 @@ try:
         # notify the user
         if new_level != level or run == 0:
             os.system('setfan ' + str(new_level) + ' > /dev/null')
-            if new_level != level or run is False:
-                if run is False:
+            if new_level != level or run == 0:
+                if run == 0:
                     print('init:', end=' ')
                 elif new_level != level:
                     print(f'{level} -> {new_level}:', end=' ')
