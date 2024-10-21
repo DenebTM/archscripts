@@ -92,8 +92,8 @@ try:
                 print(f'Fan set to level {new_level}.')
             level = new_level
 
-        # Increment and reset running index
-        run = (run + 1) % 10
+        # Increment running index
+        run += 1
 
         time.sleep(1)
 
