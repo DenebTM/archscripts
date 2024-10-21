@@ -51,11 +51,11 @@ try:
         # Determine the correct fan speed
         hyst_min, hyst_max = thresholds[level]
         if cpu_temp < hyst_min:
-            new_level = filter(lambda i: i[1][0] <= cpu_temp <= i[1][1],
-                               enumerate(thresholds[:level]))[0][0]
+            new_level = next(filter(lambda i: i[1][0] <= cpu_temp <= i[1][1],
+                                    enumerate(thresholds[:level])))[0]
         elif cpu_temp > hyst_max:
-            new_level = filter(lambda i: i[1][0] <= cpu_temp <= i[1][1],
-                               enumerate(thresholds[(level+1):]))[0][0]
+            new_level = next(filter(lambda i: i[1][0] <= cpu_temp <= i[1][1],
+                                    enumerate(thresholds[(level+1):])))[0]
         else:
             new_level = level
 
