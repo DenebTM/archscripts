@@ -83,7 +83,7 @@ try:
         # If the level has changed (or the running index is 0), set it and
         # notify the user
         if new_level != level or run == 0:
-            os.system('setfan ' + str(new_level) + ' > /dev/null')
+            os.system('setfan ' + str(new_level))
             if new_level != level or run == 0:
                 if run == 0:
                     print('init:', end=' ')
