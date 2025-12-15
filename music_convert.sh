@@ -16,12 +16,22 @@ function break() {
 trap break INT
 
 for file in "$@"; do
+    ext="${file##*.}"
+
     metadata="0"
-    if [ "${file##*.}" == "opus" ] || [ "${file##*.}" == "ogg" ]; then
+    if [ "$ext" == "opus" ] || [ "$ext" == "ogg" ]; then
         metadata="0:s:0"
     fi
+
     #ffmpeg -i "$file" -c:a libfdk_aac -c:v png -vsync passthrough -map_metadata "$metadata" $(basename "${file%.*}.m4a") &
-    ffmpeg -i "$file" -c:v png -ab 320k -vsync passthrough -map_metadata "$metadata" -id3v2_version 3 -write_id3v1 1 $(basename "${file%.*}.mp3") &
+
+    outfile=`basename "$file"`
+    outfile="${outfile%.*}.mp3"
+        if [ -z "$PARALLEL" ]; then
+            yes | ffmpeg -i "$file" -q:a 0 -map_metadata "$metadata" -id3v2_version 3 "$outfile"
+        else
+            yes | ffmpeg -i "$file" -q:a 0 -map_metadata "$metadata" -id3v2_version 3 "$outfile" &
+        fi
 done
 
 IFS=$OLDIFS

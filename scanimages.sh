@@ -4,6 +4,13 @@ if [[ -z "$1" ]]; then
     exit -1
 fi
 
+opts="
+    --device-name=escl:http://172.16.32.4:80
+    --mode=color
+    --resolution=600
+    --format=png
+"
+
 n="$1"
 basename="$2"
 for i in $(seq 1 1 $n); do
@@ -11,5 +18,5 @@ for i in $(seq 1 1 $n); do
     echo "Scanning image $i of $n, please wait..."
     fullname="$basename"
     [[ $n -gt 1 ]] && fullname="$fullname"_"$i"
-    scanimage --resolution 300 --format=png -o "$fullname".png
+    scanimage $opts -o "$fullname".png
 done
